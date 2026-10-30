@@ -1,0 +1,50 @@
+{
+  "name": "procwatch",
+  "entry": "extension",
+  "description": "Resident process-create telemetry: a compiled-in watch samples the process table on a fixed cadence and buffers creation rows, and recon.procwatch flushes the rows since the last ask -- the implant-native tier's first real entry.",
+  "license": "Apache-2.0",
+  "opsec": {
+    "landsOnDisk": false,
+    "notes": "Server side, the package lands as descriptor rows and a source tree under the module store -- no code runs in the teamserver; the sources compile into an artifact only when a build names the extension. On the target, the watch is one thread of the implant's own process and a bounded in-memory buffer -- nothing on disk, no named trace session, no extra process per ask. The sampling sweep reads the process table (the /proc tree, the toolhelp snapshot) on a fixed two-second cadence, which is itself a measurable pattern on the host; the rows ride the task channel into the audit chain like any task output."
+  },
+  "attack": [
+    "T1057"
+  ],
+  "versions": [
+    {
+      "version": "1.0.0",
+      "published": "2026-10-30T02:37:57Z",
+      "url": "https://github.com/rodframework/rod-ext-procwatch/releases/download/v1.0.0/procwatch-1.0.0.zip",
+      "sha256": "657a8c409081223d6c5c7c9959db89305933f474e15b261bada4d48b3ce201cf",
+      "signature": "u0Qk+Un+RyWl2jK9X69+qwTWap90FrYDh54buKUeXY1/HhCu0fK7xM1HNKWnXmKA/GsbGgkOslVv6WieXU7KDA==",
+      "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+      "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+      "compatibility": {
+        "teamserver": "1.0.0",
+        "targets": [
+          {
+            "implantClass": "implant",
+            "platform": "linux",
+            "arch": "amd64",
+            "buildUnit": "rod-rust"
+          },
+          {
+            "implantClass": "implant",
+            "platform": "windows",
+            "arch": "amd64",
+            "buildUnit": "rod-rust"
+          }
+        ]
+      },
+      "verbs": [
+        {
+          "name": "recon.procwatch",
+          "version": "1.0.0",
+          "techniques": [
+            "T1057"
+          ]
+        }
+      ]
+    }
+  ]
+}

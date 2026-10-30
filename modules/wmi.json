@@ -1,0 +1,54 @@
+{
+  "name": "wmi",
+  "entry": "plugin",
+  "description": "WMI event subscription seats: install, remove, and list the bound triples (event filter, command-line consumer, binding) in the repository under ROOT\\SUBSCRIPTION -- persist.wmi's execution half packed as the artifact an implant loads through module.load.",
+  "license": "Apache-2.0",
+  "opsec": {
+    "landsOnDisk": true,
+    "notes": "Server side, the package lands as descriptor rows and one artifact file under the module store -- no code runs in the teamserver. On the target, the implant half loads from staged task content, mapped in memory on Windows -- the module itself drops no file. Every write needs an elevated implant: the repository's PutInstance and DeleteInstance under ROOT\\SUBSCRIPTION are the administrator's calls. The seat lives entirely in the on-disk WMI repository, its query and command line plain to any blue-team reader that enumerates __FilterToConsumerBinding, and it fires on its trigger across reboots while it sits."
+  },
+  "attack": [
+    "T1546.003"
+  ],
+  "versions": [
+    {
+      "version": "1.1.0",
+      "published": "2026-10-30T02:37:56Z",
+      "url": "https://github.com/rodframework/rod-plugin-wmi/releases/download/v1.1.0/wmi-1.1.0.zip",
+      "sha256": "aea96e3ebdd2771cdbdb85a97ddc09726144018c1a60d448e4f78659d0ea767b",
+      "signature": "SgUgPXTfQ2w8vW4Lmkhi5sd+v2SKtkySbyOccvDrDukEunbInjo6TUWPTpBvNUm/1/ReVBo4QGbwqqQrgXZZCg==",
+      "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+      "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+      "compatibility": {
+        "teamserver": "1.0.0",
+        "targets": [
+          {
+            "implantClass": "implant",
+            "platform": "linux",
+            "arch": "amd64"
+          }
+        ],
+        "requires": [
+          "plugin-loader/exec-v1"
+        ]
+      },
+      "verbs": [
+        {
+          "name": "persist.wmi",
+          "version": "1.0.0",
+          "techniques": [
+            "T1546.003"
+          ]
+        }
+      ],
+      "pluginArtifacts": [
+        {
+          "platform": "linux",
+          "arch": "amd64",
+          "path": "plugin/wmi-linux-amd64",
+          "abi": "exec-v1"
+        }
+      ]
+    }
+  ]
+}

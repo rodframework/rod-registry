@@ -1,0 +1,54 @@
+{
+  "name": "hijack",
+  "entry": "plugin",
+  "description": "DLL search-order seats: install, remove, and list the DLLs planted beside a host binary that the loader reads before System32 -- persist.hijack's execution half packed as the artifact an implant loads through module.load.",
+  "license": "Apache-2.0",
+  "opsec": {
+    "landsOnDisk": true,
+    "notes": "Server side, the package lands as descriptor rows and one artifact file under the module store -- no code runs in the teamserver. On the target, the implant half loads from staged task content -- the planted DLL itself is the family's first on-disk seat: a plain file in the host binary's directory, hashed by any scanner that walks the file system, loading every time the binary runs while it sits. Nothing in any system ledger names it -- the blue-team side of the footprint is file-system baselining, not service or registry enumeration. Install validates the slot before writing (the binary imports the DLL, it sits outside KnownDLLs, the seat is vacant) and the copy refuses to overwrite what is already there."
+  },
+  "attack": [
+    "T1574.001"
+  ],
+  "versions": [
+    {
+      "version": "1.1.0",
+      "published": "2026-10-30T02:37:52Z",
+      "url": "https://github.com/rodframework/rod-plugin-hijack/releases/download/v1.1.0/hijack-1.1.0.zip",
+      "sha256": "a3c0ffe950e89d437c1e323695d7febbcfebb45d5d9867760998e835072ab03b",
+      "signature": "1hBdmZJgDvuSFbPkPKpUBIiqILh8myP8Nh0OosDapMcu2QLoDaV1WEqlb7JM0XVGiwi2sHFBu0cNhgMrvC2IBA==",
+      "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+      "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+      "compatibility": {
+        "teamserver": "1.0.0",
+        "targets": [
+          {
+            "implantClass": "implant",
+            "platform": "linux",
+            "arch": "amd64"
+          }
+        ],
+        "requires": [
+          "plugin-loader/exec-v1"
+        ]
+      },
+      "verbs": [
+        {
+          "name": "persist.hijack",
+          "version": "1.0.0",
+          "techniques": [
+            "T1574.001"
+          ]
+        }
+      ],
+      "pluginArtifacts": [
+        {
+          "platform": "linux",
+          "arch": "amd64",
+          "path": "plugin/hijack-linux-amd64",
+          "abi": "exec-v1"
+        }
+      ]
+    }
+  ]
+}

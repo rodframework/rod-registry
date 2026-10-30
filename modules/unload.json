@@ -1,0 +1,54 @@
+{
+  "name": "unload",
+  "entry": "plugin",
+  "description": "The fresh-copy unhook at breadth: compare any loaded library's mapped .text against a fresh copy and restore it -- the KnownDlls section object the preferred source, the System32 disk file the fallback the row names, the named exports alone or the whole .text -- evasion.unload's execution half packed as the artifact an implant loads through module.load.",
+  "license": "Apache-2.0",
+  "opsec": {
+    "landsOnDisk": false,
+    "notes": "Server side, the package lands as descriptor rows and one artifact file under the module store -- no code runs in the teamserver. On the target, the implant half loads from staged task content and nothing it does lands on disk: the fresh copy is read where it sits (the KnownDlls section object preferred -- the loader's own clean copy, read through no file at all; the System32 disk file the fallback the row names) and the restore rewrites pages of the implant process's own mapping -- copy-on-write makes them private, the effect dies with the process, and a new process maps fresh libraries. The bare task is the read (the differing-byte count, whole-text or per-function); the restore is the write the operator names. The compare trusts the fresh copy only as far as a build fingerprint carries (a patch-Tuesday drift refuses). Products that guard the mapped .text (periodic re-hooking, guard-page telemetry) are a live blue-team surface -- the wider the library list and the narrower the function list, the smaller the rewrite window a re-hook needs to notice; the verb is sensitive (Evasion category, modifies-defenses attribute), held out of unattended firing by the registry-backed policy, and the plugin rides the per-engagement module load -- never a default profile."
+  },
+  "attack": [
+    "T1562.001"
+  ],
+  "versions": [
+    {
+      "version": "1.2.0",
+      "published": "2026-10-30T02:37:56Z",
+      "url": "https://github.com/rodframework/rod-plugin-unload/releases/download/v1.2.0/unload-1.2.0.zip",
+      "sha256": "a0120d42bc727c2e580066d8a06e5b3e1b1f718659ba6102ba70aacb9cf52002",
+      "signature": "YRtQU7E5JQjoibhRXxqEoHaQBeHPCPv9JqbCnn0YwDIdHl7GFfhViwqUAtNGqrqv4MOuj39nnHaVnPKarRmSDg==",
+      "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+      "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+      "compatibility": {
+        "teamserver": "1.0.0",
+        "targets": [
+          {
+            "implantClass": "implant",
+            "platform": "linux",
+            "arch": "amd64"
+          }
+        ],
+        "requires": [
+          "plugin-loader/exec-v1"
+        ]
+      },
+      "verbs": [
+        {
+          "name": "evasion.unload",
+          "version": "1.1.0",
+          "techniques": [
+            "T1562.001"
+          ]
+        }
+      ],
+      "pluginArtifacts": [
+        {
+          "platform": "linux",
+          "arch": "amd64",
+          "path": "plugin/unload-linux-amd64",
+          "abi": "exec-v1"
+        }
+      ]
+    }
+  ]
+}

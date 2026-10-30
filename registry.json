@@ -1,0 +1,18 @@
+[
+  "avoid",
+  "browser",
+  "browser-hook",
+  "credman",
+  "domainenum",
+  "dpapi",
+  "hijack",
+  "hives",
+  "hostenum",
+  "lsasecrets",
+  "lure-templates",
+  "procwatch",
+  "runkeys",
+  "services",
+  "unload",
+  "wmi"
+]

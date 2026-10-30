@@ -1,0 +1,54 @@
+{
+  "name": "credman",
+  "entry": "plugin",
+  "description": "Windows credential manager: survey the calling logon session's store and read its entries in place -- the inventory enumerated through the credential API (the system performs its own decryption), the generic entries' material returned as the credential rows the credentials board parses, nothing landing on disk -- collect.credman's execution half packed as the artifact an implant loads through module.load.",
+  "license": "Apache-2.0",
+  "opsec": {
+    "landsOnDisk": false,
+    "notes": "Server side, the package lands as descriptor rows and one artifact file under the module store -- no code runs in the teamserver. On the target, the implant half loads from staged task content and nothing it does lands on disk: the store is enumerated through the credential API in the implant process's own logon session and the rows ride the task's channel back. The store the verb reaches is the session's own -- no privilege asked, no seat implied: an implant running as the desktop user reads that user's saved entries (generic passwords above all), while the domain-credential types the system hands back without their blobs render as the withholding they are. The credential rows' secret field renders masked in the credentials board and never enters the audit chain; everything else the rows carry reaches the audit log every dispatched action already enters. The verb rides the per-engagement module load -- never a default profile."
+  },
+  "attack": [
+    "T1555.004"
+  ],
+  "versions": [
+    {
+      "version": "1.1.0",
+      "published": "2026-10-30T02:37:51Z",
+      "url": "https://github.com/rodframework/rod-plugin-credman/releases/download/v1.1.0/credman-1.1.0.zip",
+      "sha256": "7e7c68fd91390b1013a283e94da9c269f505b3381bec3768297af6bb7dcfaf18",
+      "signature": "sMl4PdgqR90htsT/Lx4FDKUweU3vwy6DRMd7ETFiMS04mTvcIOHBHbZ5ttr2BpYnXSpBQ5MEDKb2GROW6lBDCQ==",
+      "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+      "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+      "compatibility": {
+        "teamserver": "1.0.0",
+        "targets": [
+          {
+            "implantClass": "implant",
+            "platform": "linux",
+            "arch": "amd64"
+          }
+        ],
+        "requires": [
+          "plugin-loader/exec-v1"
+        ]
+      },
+      "verbs": [
+        {
+          "name": "collect.credman",
+          "version": "1.0.0",
+          "techniques": [
+            "T1555.004"
+          ]
+        }
+      ],
+      "pluginArtifacts": [
+        {
+          "platform": "linux",
+          "arch": "amd64",
+          "path": "plugin/credman-linux-amd64",
+          "abi": "exec-v1"
+        }
+      ]
+    }
+  ]
+}

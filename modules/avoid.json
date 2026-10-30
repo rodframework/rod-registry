@@ -1,0 +1,54 @@
+{
+  "name": "avoid",
+  "entry": "plugin",
+  "description": "AMSI and ETW patching: replace the scan and telemetry entry points in this process's memory with failure and silence -- evasion.avoid's execution half packed as the artifact an implant loads through module.load.",
+  "license": "Apache-2.0",
+  "opsec": {
+    "landsOnDisk": false,
+    "notes": "Server side, the package lands as descriptor rows and one artifact file under the module store -- no code runs in the teamserver. On the target, the implant half loads from staged task content and the patch lands in the process's own memory -- nothing on disk. The scope is exactly that process: the effect dies with it, and a new process loads fresh libraries. AMSI failure telemetry and ETW inline-hook detection are live blue-team surfaces; the verb is sensitive (Evasion category, modifies-defenses attribute), held out of unattended firing by the registry-backed policy, and the plugin rides the per-engagement module load -- never a default profile."
+  },
+  "attack": [
+    "T1562.001"
+  ],
+  "versions": [
+    {
+      "version": "1.1.0",
+      "published": "2026-10-30T02:37:50Z",
+      "url": "https://github.com/rodframework/rod-plugin-avoid/releases/download/v1.1.0/avoid-1.1.0.zip",
+      "sha256": "ad23fe2eeba7347d948e131a531c8d6fe1e8fa9a5ab33759de339bea6cfcd9dd",
+      "signature": "FcLlcr6QKgMv0Gk59YFJC0Qa6NAVFC17J6HUov1JniNnGgPMT3cFzJjCbYuhwlZ1H3dwClIFuKSV1mAM2yFiBg==",
+      "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+      "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+      "compatibility": {
+        "teamserver": "1.0.0",
+        "targets": [
+          {
+            "implantClass": "implant",
+            "platform": "linux",
+            "arch": "amd64"
+          }
+        ],
+        "requires": [
+          "plugin-loader/exec-v1"
+        ]
+      },
+      "verbs": [
+        {
+          "name": "evasion.avoid",
+          "version": "1.0.0",
+          "techniques": [
+            "T1562.001"
+          ]
+        }
+      ],
+      "pluginArtifacts": [
+        {
+          "platform": "linux",
+          "arch": "amd64",
+          "path": "plugin/avoid-linux-amd64",
+          "abi": "exec-v1"
+        }
+      ]
+    }
+  ]
+}

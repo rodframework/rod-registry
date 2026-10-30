@@ -1,0 +1,31 @@
+{
+  "name": "lure-templates",
+  "entry": "assets",
+  "description": "Reference phishing lure templates: benign, generic message pairs the campaign creation resolves by name and merges per recipient.",
+  "license": "Apache-2.0",
+  "opsec": {
+    "landsOnDisk": false,
+    "notes": "Message content the campaign engine sends through the operator's SMTP relay; nothing runs on the teamserver or the target."
+  },
+  "attack": [],
+  "versions": [
+    {
+      "version": "1.0.0",
+      "published": "2026-10-30T02:37:58Z",
+      "url": "https://github.com/rodframework/rod-assets-lure-templates/releases/download/v1.0.0/lure-templates-1.0.0.zip",
+      "sha256": "820a4de945c7c0648aa8505cbd10d353cd045877862f1326a049d64dd0e3517e",
+      "signature": "LW1sjX0NR+OMQBsrsJJ3+khWsDvO5CKBw/CPW1w33ojD1xiDofre66Ct9BZgloEfnV7HpUOs2GUyyjPAz8UhBA==",
+      "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+      "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+      "compatibility": {
+        "teamserver": "1.0.0",
+        "targets": []
+      },
+      "verbs": [],
+      "assets": [
+        "document-review",
+        "security-notice"
+      ]
+    }
+  ]
+}
