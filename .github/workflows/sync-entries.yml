@@ -87,11 +87,10 @@ jobs:
                           f'{name}: {refused} already indexed with a different digest; '
                           'the publisher bumps the version instead of rebinding it.')
                   if fresh:
-                      merged = current['versions'] + fresh
-                      merged.sort(key=lambda v: semver_key(v['version']), reverse=True)
-                      merged.sort(key=lambda v: semver_key(v['version']))
-                      # Newest release first (the store's own order):
-                      merged.sort(key=lambda v: semver_key(v['version']), reverse=True)
+                      # Newest release first, the store's own order.
+                      merged = sorted(current['versions'] + fresh,
+                                      key=lambda v: semver_key(v['version']),
+                                      reverse=True)
                       current = dict(current, versions=merged)
                       changes[name] = current
                       print(f'{name}: +{[v["version"] for v in fresh]} from {repo} {release["tag_name"]}')
