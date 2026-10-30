@@ -1,0 +1,54 @@
+{
+  "name": "runkeys",
+  "entry": "plugin",
+  "description": "Registry run keys: install, remove, and list the Run key seat under HKCU or HKLM -- persist.runkeys's execution half packed as the artifact an implant loads through module.load.",
+  "license": "Apache-2.0",
+  "opsec": {
+    "landsOnDisk": true,
+    "notes": "Server side, the package lands as descriptor rows and one artifact file under the module store -- no code runs in the teamserver. On the target, the implant half loads from staged task content, mapped in memory on Windows -- nothing on disk itself. The seat is one registry value: its command line sits in the hive as plain text any blue-team reader sees, and it runs at every interactive logon while it sits. HKCU seats need no elevation; HKLM seats need an elevated implant."
+  },
+  "attack": [
+    "T1547.001"
+  ],
+  "versions": [
+    {
+      "version": "1.1.0",
+      "published": "2026-10-30T02:37:54Z",
+      "url": "https://github.com/rodframework/rod-plugin-runkeys/releases/download/v1.1.0/runkeys-1.1.0.zip",
+      "sha256": "c9504f2ac7a1ef45fa36ba68b1834be6a5f5448c1a9bd557c83a69107394aea7",
+      "signature": "Dpfc/psjQBN2NHyLEaiMXgGcDYZH5LIH+N7kAPVikvpT4wZj2LU4/p8ffSOalUHiq84v9gTUjP4E5Nr+lwbmDg==",
+      "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+      "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+      "compatibility": {
+        "teamserver": "1.0.0",
+        "targets": [
+          {
+            "implantClass": "implant",
+            "platform": "linux",
+            "arch": "amd64"
+          }
+        ],
+        "requires": [
+          "plugin-loader/exec-v1"
+        ]
+      },
+      "verbs": [
+        {
+          "name": "persist.runkeys",
+          "version": "1.0.0",
+          "techniques": [
+            "T1547.001"
+          ]
+        }
+      ],
+      "pluginArtifacts": [
+        {
+          "platform": "linux",
+          "arch": "amd64",
+          "path": "plugin/runkeys-linux-amd64",
+          "abi": "exec-v1"
+        }
+      ]
+    }
+  ]
+}

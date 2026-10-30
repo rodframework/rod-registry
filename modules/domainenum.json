@@ -1,0 +1,60 @@
+{
+  "name": "domainenum",
+  "entry": "plugin",
+  "description": "Domain discovery, both halves: local domain posture, DC location (logon server / DNS SRV), and the anonymous LDAP root DSE; and over an authenticated LDAP bind, domain users, groups, ACLs, SPN objects, and trusts -- recon.domainenum's execution half packed as the artifact an implant loads through module.load.",
+  "license": "Apache-2.0",
+  "opsec": {
+    "landsOnDisk": true,
+    "notes": "Server side, the package lands as descriptor rows and one artifact file under the module store -- no code runs in the teamserver. On the target, the implant half loads from staged task content: through a memfd on Linux (nothing on disk), mapped in memory on Windows. The sweep sends DNS and LDAP packets to the domain's own servers -- network-visible to the DC. The authenticated scopes bind with the task's credential over simple bind on the cleartext port: the secret crosses the implant-to-DC path in the open unless the site seals it, and a wrong password counts toward the account's lockout."
+  },
+  "attack": [
+    "T1018",
+    "T1482",
+    "T1087.002",
+    "T1069.002"
+  ],
+  "versions": [
+    {
+      "version": "1.2.0",
+      "published": "2026-10-30T02:37:49Z",
+      "url": "https://github.com/rodframework/rod-plugin-domainenum/releases/download/v1.2.0/domainenum-1.2.0.zip",
+      "sha256": "25db6b1c005d655ee21e1f3e6fc353fc3ad864977428eee8c31c55dfcac56633",
+      "signature": "d6c2ELnPd/hGupnaWvpWaP2TJN9mW/in5vEYrRAfFqwedhnhGX43eAJoUDFLIc9K95YfC2ASSzn52y4SqeD1Cw==",
+      "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+      "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+      "compatibility": {
+        "teamserver": "1.0.0",
+        "targets": [
+          {
+            "implantClass": "implant",
+            "platform": "linux",
+            "arch": "amd64"
+          }
+        ],
+        "requires": [
+          "plugin-loader/exec-v1"
+        ]
+      },
+      "verbs": [
+        {
+          "name": "recon.domainenum",
+          "version": "1.1.0",
+          "techniques": [
+            "T1018",
+            "T1482",
+            "T1087.002",
+            "T1069.002"
+          ]
+        }
+      ],
+      "pluginArtifacts": [
+        {
+          "platform": "linux",
+          "arch": "amd64",
+          "path": "plugin/domainenum-linux-amd64",
+          "abi": "exec-v1"
+        }
+      ]
+    }
+  ]
+}

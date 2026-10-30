@@ -1,0 +1,30 @@
+{
+  "name": "browser-hook",
+  "entry": "assets",
+  "description": "Browser hook script for the Browser implant class: the served JavaScript client the hook mint renders with a per-hook bake.",
+  "license": "Apache-2.0",
+  "opsec": {
+    "landsOnDisk": false,
+    "notes": "Served script content only; nothing runs on the teamserver. Once loaded in a victim page the script contacts the baked endpoints from the browser."
+  },
+  "attack": [],
+  "versions": [
+    {
+      "version": "1.0.0",
+      "published": "2026-10-30T02:37:58Z",
+      "url": "https://github.com/rodframework/rod-assets-browser-hook/releases/download/v1.0.0/browser-hook-1.0.0.zip",
+      "sha256": "ed8829668425d714160300b9ae06ba5888214883d3945420a642c72eb73880d2",
+      "signature": "IE4v6U26LtvQVjVORMzju34Gr9JLSj5XfGWTKFPTixgqLJJ6IZ2vG2sFTXP5KUyMWnVm+W6VnrxJ/VUn8AJ5Cw==",
+      "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+      "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+      "compatibility": {
+        "teamserver": "1.0.0",
+        "targets": []
+      },
+      "verbs": [],
+      "assets": [
+        "hook"
+      ]
+    }
+  ]
+}

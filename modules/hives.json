@@ -1,0 +1,56 @@
+{
+  "name": "hives",
+  "entry": "plugin",
+  "description": "Account hive dumps: save the SAM, SYSTEM, and SECURITY hives under the backup privilege and report the readiness facts -- collect.hives's execution half packed as the artifact an implant loads through module.load.",
+  "license": "Apache-2.0",
+  "opsec": {
+    "landsOnDisk": true,
+    "notes": "Server side, the package lands as descriptor rows and one artifact file under the module store -- no code runs in the teamserver. On the target, the implant half loads from staged task content -- the dumps themselves are the footprint: three on-disk files (sam.hiv, security.hiv, system.hiv) in the task-named directory, carrying account hashes and cached credentials in plain reach of any scanner until the operator pulls and deletes them. The save needs the backup privilege, which is the administrator's to hold; the refusal names elevation rather than pretending the save ran. The verb rides the per-engagement module load -- never a default profile."
+  },
+  "attack": [
+    "T1003.002",
+    "T1003.005"
+  ],
+  "versions": [
+    {
+      "version": "1.1.0",
+      "published": "2026-10-30T02:37:53Z",
+      "url": "https://github.com/rodframework/rod-plugin-hives/releases/download/v1.1.0/hives-1.1.0.zip",
+      "sha256": "f8da32aaf7f7b08f21b46f28afdc837c2583afa2dc431f02578f2d221926f0c1",
+      "signature": "e887HrTFfS3Ta+QYoT3RdehBkDsl+1Avb14HzhL/uye5XVfrqiJPPzQ+x0ioRdXn1/nOSNp/hsTBiQEhWfKuAw==",
+      "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+      "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+      "compatibility": {
+        "teamserver": "1.0.0",
+        "targets": [
+          {
+            "implantClass": "implant",
+            "platform": "linux",
+            "arch": "amd64"
+          }
+        ],
+        "requires": [
+          "plugin-loader/exec-v1"
+        ]
+      },
+      "verbs": [
+        {
+          "name": "collect.hives",
+          "version": "1.0.0",
+          "techniques": [
+            "T1003.002",
+            "T1003.005"
+          ]
+        }
+      ],
+      "pluginArtifacts": [
+        {
+          "platform": "linux",
+          "arch": "amd64",
+          "path": "plugin/hives-linux-amd64",
+          "abi": "exec-v1"
+        }
+      ]
+    }
+  ]
+}

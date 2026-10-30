@@ -1,0 +1,54 @@
+{
+  "name": "dpapi",
+  "entry": "plugin",
+  "description": "DPAPI unsealing: unseal the task's base64 blob under the target user's own masterkeys and report the masterkey readiness facts -- collect.dpapi's execution half packed as the artifact an implant loads through module.load.",
+  "license": "Apache-2.0",
+  "opsec": {
+    "landsOnDisk": false,
+    "notes": "Server side, the package lands as descriptor rows and one artifact file under the module store -- no code runs in the teamserver. On the target, the implant half loads from staged task content and nothing it does lands on disk: the blob arrives as task text, the plaintext rides back the task's channel into the audit chain. The unseal runs under the masterkeys of the user the implant runs as -- a blob sealed by another user or another machine refuses, and DPAPI itself keeps no operation log. The verb rides the per-engagement module load -- never a default profile."
+  },
+  "attack": [
+    "T1555"
+  ],
+  "versions": [
+    {
+      "version": "1.1.0",
+      "published": "2026-10-30T02:37:52Z",
+      "url": "https://github.com/rodframework/rod-plugin-dpapi/releases/download/v1.1.0/dpapi-1.1.0.zip",
+      "sha256": "842fa87a6fd251874f4b10a158cc0f9e8dc14ab7e156badeca96cd49245f7fe6",
+      "signature": "a+pp89B9e+AD2VhB9uY6rnf0EGazY+eoSHyC86ISm2y9ZCWvl4+UezVZMumrxxJJfk/KMTIfkjb5wlOIl+6JCA==",
+      "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+      "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+      "compatibility": {
+        "teamserver": "1.0.0",
+        "targets": [
+          {
+            "implantClass": "implant",
+            "platform": "linux",
+            "arch": "amd64"
+          }
+        ],
+        "requires": [
+          "plugin-loader/exec-v1"
+        ]
+      },
+      "verbs": [
+        {
+          "name": "collect.dpapi",
+          "version": "1.0.0",
+          "techniques": [
+            "T1555"
+          ]
+        }
+      ],
+      "pluginArtifacts": [
+        {
+          "platform": "linux",
+          "arch": "amd64",
+          "path": "plugin/dpapi-linux-amd64",
+          "abi": "exec-v1"
+        }
+      ]
+    }
+  ]
+}

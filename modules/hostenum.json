@@ -1,0 +1,54 @@
+{
+  "name": "hostenum",
+  "entry": "plugin",
+  "description": "Host enumeration reference plugin: server-side registration for recon.hostenum, execution half packed as the artifact an implant loads through module.load.",
+  "license": "Apache-2.0",
+  "opsec": {
+    "landsOnDisk": true,
+    "notes": "Server side, the package lands as descriptor rows and one artifact file under the module store -- no code runs in the teamserver. On the target, the implant half loads from staged task content: through a memfd on Linux (nothing on disk), mapped in memory on Windows."
+  },
+  "attack": [
+    "T1082"
+  ],
+  "versions": [
+    {
+      "version": "1.2.0",
+      "published": "2026-10-30T02:37:48Z",
+      "url": "https://github.com/rodframework/rod-plugin-hostenum/releases/download/v1.2.0/hostenum-1.2.0.zip",
+      "sha256": "3ae4a9f73b28449f3285239d6331f67f18ac37594bc3a00649438b7c6a915b17",
+      "signature": "a9sTe0YrRQNAKekG4wsbbHwcHdcGsiyyA4FlsjCe4Mwx7rUpS+mwHJ3c5fBbmb7eSD6ebSu306BffkR2k6j4BA==",
+      "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+      "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+      "compatibility": {
+        "teamserver": "1.0.0",
+        "targets": [
+          {
+            "implantClass": "implant",
+            "platform": "linux",
+            "arch": "amd64"
+          }
+        ],
+        "requires": [
+          "plugin-loader/exec-v1"
+        ]
+      },
+      "verbs": [
+        {
+          "name": "recon.hostenum",
+          "version": "1.1.0",
+          "techniques": [
+            "T1082"
+          ]
+        }
+      ],
+      "pluginArtifacts": [
+        {
+          "platform": "linux",
+          "arch": "amd64",
+          "path": "plugin/hostenum-linux-amd64",
+          "abi": "exec-v1"
+        }
+      ]
+    }
+  ]
+}

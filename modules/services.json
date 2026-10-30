@@ -1,0 +1,54 @@
+{
+  "name": "services",
+  "entry": "plugin",
+  "description": "Windows service seats: install, remove, and list the SCM database's WIN32 service records -- persist.services's execution half packed as the artifact an implant loads through module.load.",
+  "license": "Apache-2.0",
+  "opsec": {
+    "landsOnDisk": true,
+    "notes": "Server side, the package lands as descriptor rows and one artifact file under the module store -- no code runs in the teamserver. On the target, the implant half loads from staged task content, mapped in memory on Windows -- nothing on disk itself. Every write needs an elevated implant: the SCM grants service creation and deletion to the administrator alone. The seat is one record in the SCM database (HKLM\\SYSTEM\\CurrentControlSet\\Services on disk) with its command line as plain text any blue-team reader sees, Windows logs the installation as Event 7045, and the service runs at every boot while it sits."
+  },
+  "attack": [
+    "T1543.003"
+  ],
+  "versions": [
+    {
+      "version": "1.1.0",
+      "published": "2026-10-30T02:37:55Z",
+      "url": "https://github.com/rodframework/rod-plugin-services/releases/download/v1.1.0/services-1.1.0.zip",
+      "sha256": "50807fa5ee7f9ffbe17a83f95272c3bc50a952456db131ed7911cbbb3868cb0f",
+      "signature": "CAPyUFF+mfwSCuHvRWcw+UaRU9WWITDTxozw74Dpl9VBqFu5yndJcFWSV4uTZ4EXhDZTcqKNgssPX8Lk1Z5SBg==",
+      "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+      "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+      "compatibility": {
+        "teamserver": "1.0.0",
+        "targets": [
+          {
+            "implantClass": "implant",
+            "platform": "linux",
+            "arch": "amd64"
+          }
+        ],
+        "requires": [
+          "plugin-loader/exec-v1"
+        ]
+      },
+      "verbs": [
+        {
+          "name": "persist.services",
+          "version": "1.0.0",
+          "techniques": [
+            "T1543.003"
+          ]
+        }
+      ],
+      "pluginArtifacts": [
+        {
+          "platform": "linux",
+          "arch": "amd64",
+          "path": "plugin/services-linux-amd64",
+          "abi": "exec-v1"
+        }
+      ]
+    }
+  ]
+}
