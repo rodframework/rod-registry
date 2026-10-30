@@ -1,0 +1,137 @@
+name: sync-entries
+
+# The index half of the official release path: every official module
+# repository's release carries a registry-entry.json beside the signed
+# package (the release workflow writes it, its URLs pointed at the
+# release asset), and this job folds the entries the index does not
+# carry yet into a pull request -- the same publication-is-a-PR gate a
+# community publisher rides. The nightly schedule keeps the index
+# following on its own; a maintainer dispatches for an immediate pass.
+# A version the index already carries with the same digest is a no-op;
+# the same version with a different digest is refused loudly (the index
+# never rebinds a version number to different bytes -- the publisher
+# bumps the version, exactly what rod mod publish holds locally).
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Fold new release entries into a pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import pathlib
+          import subprocess
+          import urllib.request
+
+          ORG = 'rodframework'
+          PREFIXES = ('rod-plugin-', 'rod-ext-', 'rod-assets-')
+
+
+          def gh(*args):
+              return subprocess.check_output(['gh', *args]).decode()
+
+
+          def semver_key(text):
+              core, _, pre = text.partition('-')
+              numbers = [int(part) for part in core.split('.')]
+              while len(numbers) < 3:
+                  numbers.append(0)
+              # A prerelease sorts below the release it heads toward.
+              return (numbers, pre == '', pre)
+
+
+          repos = [repo['name'] for repo in
+                   json.loads(gh('api', f'orgs/{ORG}/repos?per_page=100'))
+                   if repo['name'].startswith(PREFIXES)]
+
+          changes = {}
+          for repo in sorted(repos):
+              releases = json.loads(gh('api', f'repos/{ORG}/{repo}/releases?per_page=100'))
+              for release in releases:
+                  asset = next((a for a in release['assets']
+                                if a['name'] == 'registry-entry.json'), None)
+                  if asset is None:
+                      continue
+                  entry = json.load(urllib.request.urlopen(asset['browser_download_url']))
+                  name = entry['name']
+                  path = pathlib.Path('modules') / f'{name}.json'
+                  if not path.exists():
+                      changes[name] = entry
+                      print(f'{name}: first entry from {repo} {release["tag_name"]}')
+                      continue
+                  current = json.load(open(path))
+                  known = {v['version']: v['sha256'] for v in current['versions']}
+                  fresh, refused = [], []
+                  for version in entry['versions']:
+                      digest = known.get(version['version'])
+                      if digest is None:
+                          fresh.append(version)
+                      elif digest != version['sha256']:
+                          refused.append(version['version'])
+                  if refused:
+                      raise SystemExit(
+                          f'{name}: {refused} already indexed with a different digest; '
+                          'the publisher bumps the version instead of rebinding it.')
+                  if fresh:
+                      merged = current['versions'] + fresh
+                      merged.sort(key=lambda v: semver_key(v['version']), reverse=True)
+                      merged.sort(key=lambda v: semver_key(v['version']))
+                      # Newest release first (the store's own order):
+                      merged.sort(key=lambda v: semver_key(v['version']), reverse=True)
+                      current = dict(current, versions=merged)
+                      changes[name] = current
+                      print(f'{name}: +{[v["version"] for v in fresh]} from {repo} {release["tag_name"]}')
+
+          if not changes:
+              print('index in sync with every official release; no pull request.')
+              raise SystemExit(0)
+
+          for name, entry in changes.items():
+              path = pathlib.Path('modules') / f'{name}.json'
+              with open(path, 'w') as f:
+                  json.dump(entry, f, indent=2)
+                  f.write('\n')
+
+          names = sorted(
+              json.load(open(path)).get('name', path.stem)
+              for path in pathlib.Path('modules').glob('*.json')
+              if path.name != 'registry.json')
+          for target in ('modules/registry.json', 'registry.json'):
+              with open(target, 'w') as f:
+                  json.dump(names, f, indent=2)
+                  f.write('\n')
+
+          branch = 'sync/' + os.environ['GITHUB_RUN_NUMBER']
+          subprocess.check_call(['git', 'checkout', '-b', branch])
+          subprocess.check_call(['git', 'add', '-A'])
+          subprocess.check_call(
+              ['git', '-c', 'user.name=rod-registry', '-c',
+               'user.email=noreply@users.noreply.github.com',
+               'commit', '-qm',
+               'Fold new official release entries\n\n'
+               + '\n'.join(f'- {name}' for name in sorted(changes))])
+          subprocess.check_call(
+              ['git', 'push', '--quiet', 'origin', branch])
+          subprocess.check_call(
+              ['gh', 'pr', 'create', '--title',
+               f'Fold {len(changes)} new official release entries',
+               '--body',
+               'Entries folded from the official repositories\' releases '
+               '(registry-entry.json assets). Same-version-different-digest '
+               'refusals fail this job before any PR opens.'])
+          print(f'pull request opened with {len(changes)} entr{"y" if len(changes) == 1 else "ies"}.')
+          PY
