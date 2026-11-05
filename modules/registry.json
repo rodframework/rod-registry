@@ -11,6 +11,8 @@
   "lsasecrets",
   "lure-templates",
   "procwatch",
+  "rod-listener-doh",
+  "rod-listener-https",
   "runkeys",
   "services",
   "unload",

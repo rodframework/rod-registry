@@ -1,0 +1,27 @@
+{
+ "name": "rod-listener-https",
+ "entry": "listener",
+ "description": "The official https listener: the envelope POST, the WebSocket beacon, the plain-http variant, and hook, lure, and artifact forwarding over the listener bridge.",
+ "license": "Apache-2.0",
+ "opsec": {
+  "landsOnDisk": true,
+  "notes": "Operator-side infrastructure, not target-side: the package lands as a static binary tree under the teamserver's module store and runs as a supervised child on the same host (or a future edge host), binding one HTTP(S) front per listener. On the wire it is an ordinary web server -- one port, server TLS when the front says so (leaf issued by the engagement CA, handed over as a user-only PEM), no client certificate anywhere. The process itself parses no rod.v1 grammar, holds no engagement key, and learns no implant identity; contacts stay sealed end to end under the per-artifact key the kernel never shares with it."
+ },
+ "attack": [],
+ "versions": [
+  {
+   "version": "1.0.0",
+   "published": "2026-11-05T04:15:03Z",
+   "url": "https://github.com/rodframework/rod-listener-https/releases/download/v1.0.0/rod-listener-https-1.0.0.zip",
+   "sha256": "4e51c130f7fb29625d09d315cfded7c8e9ef4d8d0e431b8a52ae584c893461af",
+   "signature": "kd3rms9RsnQtvwCoA5TMne9Uqa1PCTHgHeTIffr7doaKd5Yc3/wS0c0pwMMA+m5I/SdlYirdzKIoLFxbtD1sDQ==",
+   "publicKey": "gDc7PcR7e5411IJgGJt2Oq10K/tFG9Ckl2BBCJjRlbE=",
+   "fingerprint": "7eb0ea8cc3b2158fe0da3492935cce23",
+   "compatibility": {
+    "teamserver": "1.0.0",
+    "targets": []
+   },
+   "verbs": []
+  }
+ ]
+}
